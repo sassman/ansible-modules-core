@@ -20,11 +20,11 @@ module: rds_snapshot
 version_added: "1.7.3"
 short_description: manage RDS database snapshots
 description:
-     - copy, delete, and describes. This module has a dependency on python-boto >= 2.5.
+     - copy and delete. This module has a dependency on python-boto >= 2.5.
 options:
   state:
     description:
-      - Specifies whether the subnet should be present or absent.
+      - Specifies whether the snapshot should be present or absent.
     required: true
     default: present
     aliases: []
@@ -60,7 +60,7 @@ options:
     default: null
     aliases: [ 'ec2_secret_key', 'secret_key' ]
 requirements: [ "boto" ]
-author: Scott Anderson
+author: Sven Assmann
 '''
 
 EXAMPLES = '''
