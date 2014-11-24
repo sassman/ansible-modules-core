@@ -17,7 +17,7 @@
 DOCUMENTATION = '''
 ---
 module: rds_snapshot
-version_added: "1.5"
+version_added: "1.7.3"
 short_description: manage RDS database snapshots
 description:
      - copy, delete, and describes. This module has a dependency on python-boto >= 2.5.
