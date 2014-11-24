@@ -96,10 +96,9 @@ def main():
 
     state = module.params.get('state')
     snapshot_name = module.params.get('name').lower()
-    source_snapshot = module.params.get('source_snapshot').lower()
 
     if state == 'present':
-        for required in ['name']:
+        for required in ['name', 'source_snapshot']:
             if not module.params.get(required):
                 module.fail_json(msg=str("Parameter %s required for state='present'" % required))
     else:
@@ -127,8 +126,7 @@ def main():
             matching_snapshots = conn.get_all_dbsnapshots(snapshot_name, max_records=100)
             exists = len(matching_snapshots) > 0
         except BotoServerError, e:
-            # TODO check if that error code is really the proper one
-            if e.error_code != 'DBSnapshotNotFoundFault':
+            if e.error_code != 'DBSnapshotNotFound':
                 module.fail_json(msg=e.error_message)
 
         if state == 'absent':
@@ -136,8 +134,9 @@ def main():
                 conn.delete_dbsnapshot(snapshot_name)
                 changed = True
         else:
+            source_snapshot = module.params.get('source_snapshot').lower()
             if not exists and source_snapshot:
-
+                source_exists = False
                 try:
                     matching_source_snapshots = conn.get_all_dbsnapshots(source_snapshot, max_records=100)
                     source_exists = len(matching_source_snapshots) > 0
